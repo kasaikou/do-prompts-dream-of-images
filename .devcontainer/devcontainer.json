@@ -13,7 +13,7 @@
 	// "forwardPorts": [],
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
 	// "postCreateCommand": "apt-get update && apt-get install -y curl",
-	"postCreateCommand": "python3.10 -m venv .container-venv",
+	"postCreateCommand": "/workspace/.devcontainer/post_create.sh",
 	"extensions": [
 		"emeraldwalk.RunOnSave",
 		"ms-toolsai.jupyter",
@@ -22,5 +22,14 @@
 		"ms-python.isort",
 		"eamodio.gitlens",
 		"mhutchie.git-graph"
-	]
+	],
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"python.venvFolders": [
+					".container-venv"
+				]
+			}
+		}
+	}
 }
