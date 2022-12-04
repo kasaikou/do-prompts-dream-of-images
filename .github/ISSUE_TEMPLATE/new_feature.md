@@ -1,6 +1,6 @@
 ---
 name: 🚀 New feature
-description: Create issue for new feature
+about: Create issue for new feature
 labels: [enhancement]
 ---
 
