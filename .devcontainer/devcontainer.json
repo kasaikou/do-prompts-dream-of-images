@@ -26,7 +26,6 @@
 	"customizations": {
 		"vscode": {
 			"settings": {
-				"python.analysis.typeCheckingMode": "basic",
 				"python.venvFolders": [
 					".container-venv"
 				]
