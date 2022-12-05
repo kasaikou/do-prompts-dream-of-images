@@ -11,8 +11,10 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       # Update this to wherever you want VS Code to mount the folder of your project
       - ..:/workspace:cached
+      - gohome:/home/vscode/go:cached
     environment:
-      PATH: ${PATH}:/workspace
+      PATH: ${PATH}:/workspace:/usr/local/go/bin:/home/vscode/go/bin
+      GOPATH: /home/vscode/go
     cap_add:
       - SYS_PTRACE
     security_opt:
@@ -31,3 +33,5 @@ services:
     user: vscode
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
     # (Adding the "ports" property to this file will not forward from a Codespace.)
+volumes:
+  gohome:
