@@ -14,12 +14,14 @@
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
 	// "postCreateCommand": "apt-get update && apt-get install -y curl",
 	"postCreateCommand": "/workspace/.devcontainer/post_create.sh",
+	"postAttachCommand": "/workspace/.devcontainer/post_attach.sh",
 	"extensions": [
 		"emeraldwalk.RunOnSave",
 		"ms-toolsai.jupyter",
 		"ms-python.python",
 		"ms-python.gather",
 		"ms-python.isort",
+		"golang.go",
 		"eamodio.gitlens",
 		"mhutchie.git-graph"
 	],
@@ -28,6 +30,10 @@
 			"settings": {
 				"python.venvFolders": [
 					".container-venv"
+				],
+				"jupyter.widgetScriptSources": [
+					"jsdelivr.com",
+					"unpkg.com"
 				]
 			}
 		}

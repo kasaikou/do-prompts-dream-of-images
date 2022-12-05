@@ -1,4 +1,16 @@
 {
     "python.analysis.typeCheckingMode": "basic",
-    "python.formatting.provider": "yapf"
+    "python.formatting.provider": "yapf",
+    "jupyter.widgetScriptSources": [
+        "jsdelivr.com",
+        "unpkg.com"
+    ],
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": ".ipynb$",
+                "cmd": "jupytext --set-formats '@/ipynb,ipymd//md:markdown,py:percent' ${file}"
+            }
+        ]
+    },
 }
