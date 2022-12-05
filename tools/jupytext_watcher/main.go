@@ -26,7 +26,7 @@ func main() {
 
 	exitWatcher := make(chan *sync.WaitGroup)
 	go func() {
-		var prevCmd *exec.Cmd = nil
+		numProcess := 0
 
 		for {
 
@@ -38,19 +38,13 @@ func main() {
 				return
 			case event := <-watcher.Events:
 				// check executing
-				if prevCmd != nil {
-					if prevCmd.ProcessState == nil {
-						log.Printf("file changed detected, process is running: %s", event.Name)
-						break selectbreak
-					}
-					if !prevCmd.ProcessState.Exited() {
-						log.Printf("file changed detected, but process is running: %s", event.Name)
-						break selectbreak
-					}
+				if numProcess > 0 {
+					log.Printf("file changed detected, process is running: %s", event.Name)
+					break selectbreak
 				}
 
 				switch path.Ext(event.Name) {
-				case ".ipynb", ".py", ".md":
+				case ".ipynb", ".py":
 				default:
 					log.Printf("ignore file event: %s", event.Name)
 					break selectbreak
@@ -75,12 +69,15 @@ func main() {
 					cmd := exec.Command(`jupytext`, `--set-formats`, `@/ipynb,docs//md:markdown,py:percent`, event.Name)
 					cmd.Stdout = os.Stdout
 					cmd.Stderr = os.Stderr
-					log.Printf("execute command: %s", cmd.String())
-					if err := cmd.Start(); err != nil {
-						prevCmd = nil
-					} else {
-						prevCmd = cmd
-					}
+					numProcess++
+
+					go func() {
+						log.Printf("execute command: %s", cmd.String())
+						if err := cmd.Run(); err != nil {
+							log.Printf("process error: %s", err.Error())
+						}
+						numProcess--
+					}()
 				}
 			}
 		}
