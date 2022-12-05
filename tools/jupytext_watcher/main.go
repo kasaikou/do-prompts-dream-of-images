@@ -10,7 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/fsnotify/fsnotify"
+	"github.com/dietsche/rfsnotify"
+	"gopkg.in/fsnotify.v1"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	watcher, err := fsnotify.NewWatcher()
+	watcher, err := rfsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -26,7 +27,7 @@ func main() {
 
 	exitWatcher := make(chan *sync.WaitGroup)
 	go func() {
-		numProcess := 0
+		parallels := parallelProcesses{}
 
 		for {
 
@@ -38,56 +39,95 @@ func main() {
 				return
 			case event := <-watcher.Events:
 				// check executing
-				if numProcess > 0 {
+				if parallels.numRunning() > 0 {
 					log.Printf("file changed detected, process is running: %s", event.Name)
 					break selectbreak
 				}
 
-				switch path.Ext(event.Name) {
-				case ".ipynb", ".py":
-				default:
-					log.Printf("ignore file event: %s", event.Name)
-					break selectbreak
-				}
+				if isTargetFile(event) {
+					events := map[string]struct{}{
+						event.Name: {},
+					}
 
-				run := false
-				if event.Has(fsnotify.Write) {
-					log.Printf("file change detected: %s", event.Name)
-					run = true
-				} else if event.Has(fsnotify.Create) {
-					log.Printf("file create detected: %s", event.Name)
-					run = true
-				} else if event.Has(fsnotify.Remove) {
-					log.Printf("file delete detected: %s", event.Name)
-					run = true
-				} else if event.Has(fsnotify.Rename) {
-					log.Printf("file rename detected: %s", event.Name)
-					run = true
-				}
+					timer := time.NewTimer(time.Second)
 
-				if run {
-					cmd := exec.Command(`jupytext`, `--set-formats`, `@/ipynb,docs//md:markdown,py:percent`, event.Name)
-					cmd.Stdout = os.Stdout
-					cmd.Stderr = os.Stderr
-					numProcess++
-
-					go func() {
-						log.Printf("execute command: %s", cmd.String())
-						if err := cmd.Run(); err != nil {
-							log.Printf("process error: %s", err.Error())
+				timeoutLoop:
+					for {
+						select {
+						case <-timer.C:
+							break timeoutLoop
+						case event := <-watcher.Events:
+							if isTargetFile(event) {
+								timer = time.NewTimer(time.Second)
+								events[event.Name] = struct{}{}
+							}
 						}
-						numProcess--
-					}()
+					}
+
+					for path := range events {
+						parallels.add(func() {
+							cmd := exec.Command(`jupytext`, `--set-formats`, `@/ipynb,docs//md:markdown,py:percent`, path)
+							cmd.Stdout = os.Stdout
+							cmd.Stderr = os.Stderr
+
+							log.Printf("execute command: %s", cmd.String())
+							if err := cmd.Run(); err != nil {
+								log.Printf("process error: %s", err.Error())
+							}
+						})
+					}
+
 				}
 			}
 		}
 	}()
 
-	if err := watcher.Add("."); err != nil {
+	if err := watcher.AddRecursive("."); err != nil {
+		log.Fatal("cannot add fswatcher: ", err.Error())
+	}
+
+	if err := watcher.RemoveRecursive(".git"); err != nil {
 		log.Fatal("cannot add fswatcher: ", err.Error())
 	}
 
 	sig := <-signals
 	log.Printf("signal called: %s", sig.String())
-	return
+}
+
+type parallelProcesses struct {
+	lock       sync.RWMutex
+	numProcess int
+}
+
+func (pp *parallelProcesses) add(fn func()) {
+	func() {
+		pp.lock.Lock()
+		defer pp.lock.Unlock()
+		pp.numProcess++
+	}()
+
+	go func() {
+		fn()
+		pp.lock.Lock()
+		defer pp.lock.Unlock()
+		pp.numProcess--
+	}()
+}
+
+func (pp *parallelProcesses) numRunning() int {
+	pp.lock.RLock()
+	defer pp.lock.RUnlock()
+	return pp.numProcess
+}
+
+func isTargetFile(event fsnotify.Event) bool {
+
+	switch path.Ext(event.Name) {
+	case ".ipynb", ".py":
+	default:
+		log.Printf("ignore file event: %s", event.Name)
+		return false
+	}
+
+	return true
 }
