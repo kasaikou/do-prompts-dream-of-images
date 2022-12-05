@@ -20,6 +20,7 @@
 		"ms-python.python",
 		"ms-python.gather",
 		"ms-python.isort",
+		"golang.go",
 		"eamodio.gitlens",
 		"mhutchie.git-graph"
 	],
@@ -28,6 +29,10 @@
 			"settings": {
 				"python.venvFolders": [
 					".container-venv"
+				],
+				"jupyter.widgetScriptSources": [
+					"jsdelivr.com",
+					"unpkg.com"
 				]
 			}
 		}
