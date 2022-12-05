@@ -16,6 +16,11 @@ import (
 
 func main() {
 
+	jupytextPath := "jupytext"
+	if len(os.Args) >= 2 {
+		jupytextPath = os.Args[1]
+	}
+
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
@@ -66,7 +71,7 @@ func main() {
 
 					for path := range events {
 						parallels.add(func() {
-							cmd := exec.Command(`jupytext`, `--set-formats`, `@/ipynb,docs//md:markdown,py:percent`, path)
+							cmd := exec.Command(jupytextPath, `--set-formats`, `@/ipynb,docs//md:markdown,py:percent`, path)
 							cmd.Stdout = os.Stdout
 							cmd.Stderr = os.Stderr
 
