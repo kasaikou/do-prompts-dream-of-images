@@ -1,2 +1,18 @@
+# for library
+pandas
+numpy
+Pillow
 torch
+
+# for jupyter code editor
 yapf
+jupytext
+jupyter
+PyQt5
+ipykernel
+ipython
+isort
+jupyterlab
+ipywidgets
+nbconvert
+nbformat
