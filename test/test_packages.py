@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.14.1
 #   kernelspec:
-#     display_name: 'Python 3.10.6 (''.container-venv'': venv)'
+#     display_name: .container-venv
 #     language: python
 #     name: python3
 # ---
