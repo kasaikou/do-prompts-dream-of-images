@@ -2,15 +2,18 @@ ARG username=vscode
 ARG useruid=1000
 ARG usergid=${useruid}
 
-FROM ubuntu:22.04 as based
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 as based
 
 ARG username
 ARG useruid
 ARG usergid
 
+ENV DEBIAN_FRONTEND=nointeractive
+ENV TZ=Asia/Tokyo
+
 # Create non-root user
 RUN apt-get update && \
-    apt-get install -y sudo && \
+    apt-get install -y sudo tzdata && \
     groupadd --gid ${usergid} ${username} && \
     useradd -s /bin/bash --uid ${useruid} --gid ${usergid} -m ${username} && \
     echo ${username} ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${username} && \
