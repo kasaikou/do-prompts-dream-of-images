@@ -19,5 +19,6 @@ go install golang.org/x/tools/cmd/godoc@latest
 go install honnef.co/go/tools/cmd/staticcheck@latest
 go install github.com/stamblerre/gocode@v1.0.0
 go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/streamwest-1629/exec-onchanges/cmd/exec-onchanges@latest
 
 go mod download

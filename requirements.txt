@@ -3,6 +3,10 @@ pandas
 numpy
 Pillow
 torch
+git+https://github.com/huggingface/diffusers.git
+transformers
+accelerate
+scipy
 
 # for jupyter code editor
 yapf
