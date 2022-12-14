@@ -9,6 +9,7 @@ apt-get install -y \
     unzip \
     git \
     git-lfs \
+    imagemagick \
     software-properties-common \
     build-essential \
     pkg-config

@@ -1,12 +1,17 @@
 # for library
 pandas
 numpy
+matplotlib
 Pillow
 torch
 git+https://github.com/huggingface/diffusers.git
 transformers
 accelerate
 scipy
+OmegaConf
+pytorch-lightning
+tensorboard
+safetensors
 
 # for jupyter code editor
 yapf
@@ -17,6 +22,6 @@ ipykernel
 ipython
 isort
 jupyterlab
-ipywidgets
+ipywidgets<8
 nbconvert
 nbformat
