@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.14.1
 #   kernelspec:
-#     display_name: .container-venv
+#     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
@@ -24,3 +24,9 @@ print(f"{torch.cuda.is_available()=}")
 if torch.cuda.is_available():
     print(f"{torch.cuda.get_device_name()=}")
     print(f"{torch.cuda.get_device_capability()=}")
+
+# %%
+from ipywidgets import widgets
+
+button = widgets.Button(description = "ok?")
+display(button)
