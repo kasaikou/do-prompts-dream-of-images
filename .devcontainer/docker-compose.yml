@@ -15,6 +15,7 @@ services:
     environment:
       PATH: ${PATH}:/workspace:/usr/local/go/bin:/home/vscode/go/bin
       GOPATH: /home/vscode/go
+      HF_DATASETS_CACHE: /workspace/.cache/huggingface
     cap_add:
       - SYS_PTRACE
     security_opt:
