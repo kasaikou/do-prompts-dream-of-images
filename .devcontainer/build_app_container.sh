@@ -13,3 +13,4 @@ apt-get install -y \
     graphviz &&
 
 wget -qO- "https://go.dev/dl/go1.19.linux-$(dpkg --print-architecture).tar.gz" | tar zxf - -C /usr/local
+git lfs install --skip-smudge
