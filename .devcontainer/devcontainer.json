@@ -13,7 +13,10 @@
 	// "forwardPorts": [],
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
 	// "postCreateCommand": "apt-get update && apt-get install -y curl",
-	"initializeCommand": "touch ./.devcontainer/.env",
+	"initializeCommand": {
+		"env": "touch ./.devcontainer/.env",
+		"huggingface_cache": "mkdir -p /workspace/.cache/huggingface"
+	},
 	"postCreateCommand": "/workspace/.devcontainer/post_create.sh",
 	"postAttachCommand": "/workspace/.devcontainer/post_attach.sh",
 	"extensions": [
