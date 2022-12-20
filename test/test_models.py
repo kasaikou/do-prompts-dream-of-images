@@ -27,6 +27,8 @@ modelnames = [
     "Linaqruf/anything-v3.0",
     "852wa/8528-diffusion",
     "hakurei/waifu-diffusion",
+    "../models/8528d-v3",
+    "../models/8528d",
 ]
 
 def gen_txt2img(pipe, prompt: str, negative_prompt: Optional[str] = None, width=512, height=512):
