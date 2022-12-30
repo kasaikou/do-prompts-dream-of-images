@@ -1,3 +1,6 @@
 [submodule "repos/huggingface/diffusers"]
 	path = repos/huggingface/diffusers
 	url = https://github.com/huggingface/diffusers.git
+[submodule "repos/cloneofsimo/lora"]
+	path = repos/cloneofsimo/lora
+	url = https://github.com/cloneofsimo/lora.git

@@ -4,7 +4,10 @@ numpy
 matplotlib
 Pillow
 torch
+torchvision
 git+https://github.com/huggingface/diffusers.git
+git+https://github.com/cloneofsimo/lora.git
+accelerate
 transformers
 accelerate
 scipy
@@ -12,6 +15,9 @@ OmegaConf
 pytorch-lightning
 tensorboard
 safetensors
+bitsandbytes
+ftfy
+gradio
 
 # for jupyter code editor
 yapf
