@@ -8,7 +8,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.14.1
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: .container-venv
 #     language: python
 #     name: python3
 # ---
@@ -27,8 +27,10 @@ modelnames = [
     "Linaqruf/anything-v3.0",
     "852wa/8528-diffusion",
     "hakurei/waifu-diffusion",
+    "../models/8528d-v5",
+    "../models/8528d-v4",
     "../models/8528d-v3",
-    "../models/8528d",
+    "../models/8528d-v2",
 ]
 
 def gen_txt2img(pipe, prompt: str, negative_prompt: Optional[str] = None, width=512, height=512):
@@ -104,6 +106,7 @@ def set_model(clicked):
         display_widgets()
         pipe = diffusers.StableDiffusionPipeline.from_pretrained(
             str(model.value),
+            # torch_dtype=torch.float16,
             cache_dir=os.getenv("HF_DATASETS_CACHE")).to("cuda")
         pipe.safety_checker = None
 
