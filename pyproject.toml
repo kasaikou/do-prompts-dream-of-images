@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "do-prompts-dream-of-images"
+version = "0.1.0"
+description = ""
+authors = ["Kasai Kou <streamwest1629@gmail.com>"]
+readme = "README.md"
+packages = [{include = "do_prompts_dream_of_images"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
