@@ -33,13 +33,14 @@ modelnames = [
     "../models/8528d-v2",
 ]
 
-def gen_txt2img(pipe, prompt: str, negative_prompt: Optional[str] = None, width=512, height=512):
+def gen_txt2img(pipe, prompt: str, negative_prompt: Optional[str] = None, width=512, height=512, generator=None):
     with torch.autocast("cuda"):
         result = pipe([prompt],
                             negative_prompt=[negative_prompt] if negative_prompt is not None else None,
                             num_inference_steps=50,
                             width=width,
-                            height=height)
+                            height=height,
+                            generator=generator)
         return result["images"][0]
 
 def grid_img(imgs, rows: int, cols: int):
@@ -65,6 +66,8 @@ pipemodel = ""
 ```python tags=[]
 import sys
 import matplotlib.pyplot as plt
+import json
+import numpy.random
 from IPython.display import clear_output, display
 
 text_layout = Layout(width="80%")
@@ -118,24 +121,31 @@ def generate(clicked):
         pipemodel = str(model.value)
     clear_output()
     display_widgets()
-    print("\n".join([
-        "```md",
-        "# prompt",
-        f"{str(prompt.value)}",
-        "",
-        "# negative prompt",
-        f"{str(negative_prompt.value)}",
-        "```",
-    ]))
 
     imgs = []
     for i in range(4):
         torch.cuda.empty_cache()
+        generator = torch.Generator(device=pipe.device).manual_seed(numpy.random.randint(2**63))
         imgs.append(gen_txt2img(pipe,
                     str(prompt.value),
                     negative_prompt=str(negative_prompt.value),
                     width=width.value,
-                    height=height.value))
+                    height=height.value,
+                    generator=generator,
+                ))
+        print("\n".join([
+            "```md",
+            "# prompt",
+            f"{str(prompt.value)}",
+            "",
+            "# negative prompt",
+            f"{str(negative_prompt.value)}",
+            "",
+            "# seed",
+            f"{str(generator.initial_seed())}",
+            "```",
+        ]))
+
         display(imgs[i])
     torch.cuda.empty_cache()
 
