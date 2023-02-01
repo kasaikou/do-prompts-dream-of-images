@@ -18,6 +18,7 @@ safetensors
 bitsandbytes
 ftfy
 gradio
+opencv-python
 
 # for jupyter code editor
 yapf
