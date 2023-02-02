@@ -8,12 +8,15 @@
 #       format_name: percent
 #       format_version: '1.3'
 #       jupytext_version: 1.14.4
+#   kernelspec:
+#     display_name: .venv
+#     language: python
+#     name: python3
 # ---
 
 # %%
-
-# %%
 import torch
+from ipywidgets import widgets
 
 # %%
 # torch (cuda)
@@ -24,7 +27,6 @@ if torch.cuda.is_available():
     print(f"{torch.cuda.get_device_capability()=}")
 
 # %%
-from ipywidgets import widgets
 
-button = widgets.Button(description = "ok?")
+button = widgets.Button(description="ok?")
 display(button)
