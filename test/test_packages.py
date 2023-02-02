@@ -11,9 +11,8 @@
 # ---
 
 # %%
-
-# %%
 import torch
+from ipywidgets import widgets
 
 # %%
 # torch (cuda)
@@ -24,7 +23,6 @@ if torch.cuda.is_available():
     print(f"{torch.cuda.get_device_capability()=}")
 
 # %%
-from ipywidgets import widgets
 
-button = widgets.Button(description = "ok?")
+button = widgets.Button(description="ok?")
 display(button)
