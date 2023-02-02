@@ -8,7 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 pandas = "^1.5.3"
-jupytext = "^1.14.4"
+jupytext = "1.14.4"
 jupyter = "^1.0.0"
 pyqt5 = "^5.15.8"
 ipykernel = "^6.20.2"
