@@ -3,16 +3,17 @@ jupyter:
   jupytext:
     cell_metadata_filter: -all
     formats: '@/ipynb,docs//md,py:percent'
+    main_language: python
     text_representation:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.14.1
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
+      jupytext_version: 1.14.4
 ---
+
+```python
+
+```
 
 ```python
 import torch
