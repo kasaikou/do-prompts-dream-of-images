@@ -1,4 +1,0 @@
-#!/bin/sh
-
-pip install $@ &&
-pip freeze > requirements.lock
