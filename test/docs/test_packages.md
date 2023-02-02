@@ -12,11 +12,8 @@ jupyter:
 ---
 
 ```python
-
-```
-
-```python
 import torch
+from ipywidgets import widgets
 ```
 
 ```python
@@ -29,8 +26,7 @@ if torch.cuda.is_available():
 ```
 
 ```python
-from ipywidgets import widgets
 
-button = widgets.Button(description = "ok?")
+button = widgets.Button(description="ok?")
 display(button)
 ```
