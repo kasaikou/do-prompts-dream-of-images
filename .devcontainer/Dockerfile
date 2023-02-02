@@ -33,10 +33,12 @@ FROM core as published
 RUN apt-get install -y --no-install-recommends \
     git \
     git-lfs \
+    python3.10 \
     imagemagick \
     build-essential \
     pkg-config && \
-    ln -s /usr/bin/python3 /usr/bin/python
+    update-alternatives --install /usr/bin/python python /usr/bin/python3.10 10 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10
 
 ARG username
 USER ${username}
