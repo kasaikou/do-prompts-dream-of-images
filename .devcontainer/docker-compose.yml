@@ -13,8 +13,6 @@ services:
       - ..:/workspace:cached
       - gohome:/home/vscode/go:cached
     environment:
-      PATH: ${PATH}:/workspace:/usr/local/go/bin:/home/vscode/go/bin
-      GOPATH: /home/vscode/go
       HF_DATASETS_CACHE: /workspace/.cache/huggingface
     cap_add:
       - SYS_PTRACE
@@ -32,7 +30,7 @@ services:
               capabilities: [ "gpu" ]
     # Uncomment the next line to use a non-root user for all processes.
     user: vscode
-    env_file: 
+    env_file:
       - .env
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
     # (Adding the "ports" property to this file will not forward from a Codespace.)
