@@ -6,4 +6,4 @@ poetry env use python3.10
 exec-onchanges \
     -i "*.py" -i "**/@*.ipynb" \
     -e .git -e __pycache__ -e .venv -e node_modules -e models -e repos -e .cache -e .ipynb_checkpoints -- \
-    bash .devcontainer/update_notebook.sh "{{FILEPATH}}"
+    go run ./cmd/update_notebook "{{FILEPATH}}"
