@@ -84,7 +84,7 @@ if __name__ == "__main__":
 ```
 
 ```python
-def execute_img2img(
+def execute_txt2img(
     model,
     prompt: str,
     negative_prompt: str,
@@ -128,7 +128,7 @@ def execute_img2img(
 if __name__ == "__main__":
     model = repo.StableDiffusionPipeline()
     model.safety_checker = None
-    image, props = execute_img2img(
+    image, props = execute_txt2img(
         model,
         "happy valentine's day",
         "worse quality",
