@@ -1,2 +1,2 @@
 # %%
-from model import HuggingFaceDiffusionRepo
+from .model import HuggingFaceDiffusionRepo, execute_txt2img
