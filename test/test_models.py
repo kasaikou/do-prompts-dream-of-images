@@ -1,24 +1,15 @@
-# ---
-# jupyter:
-#   jupytext:
-#     formats: '@/ipynb,docs//md,py:percent'
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.14.1
-#   kernelspec:
-#     display_name: .container-venv
-#     language: python
-#     name: python3
-# ---
-
-# %% jupyter={"source_hidden": true} tags=[]
-import diffusers
-import torch
+# %%
+import json
 import os
+import sys
 from typing import List, Optional
-from ipywidgets import widgets, interact, Layout
+
+import diffusers
+import matplotlib.pyplot as plt
+import numpy.random
+import torch
+from IPython.display import clear_output, display
+from ipywidgets import Layout, interact, widgets
 from PIL import Image
 
 modelnames = [
@@ -33,14 +24,26 @@ modelnames = [
     "../models/8528d-v2",
 ]
 
-def gen_txt2img(pipe, prompt: str, negative_prompt: Optional[str] = None, width=512, height=512):
+
+def gen_txt2img(
+    pipe,
+    prompt: str,
+    negative_prompt: Optional[str] = None,
+    width=512,
+    height=512,
+    generator=None,
+):
     with torch.autocast("cuda"):
-        result = pipe([prompt],
-                            negative_prompt=[negative_prompt] if negative_prompt is not None else None,
-                            num_inference_steps=50,
-                            width=width,
-                            height=height)
+        result = pipe(
+            [prompt],
+            negative_prompt=[negative_prompt] if negative_prompt is not None else None,
+            num_inference_steps=50,
+            width=width,
+            height=height,
+            generator=generator,
+        )
         return result["images"][0]
+
 
 def grid_img(imgs, rows: int, cols: int):
     if len(imgs) > rows * cols:
@@ -61,33 +64,23 @@ imgs = []
 pipemodel = ""
 
 
-# %% tags=[]
-import sys
-import matplotlib.pyplot as plt
-from IPython.display import clear_output, display
+# %%
 
 text_layout = Layout(width="80%")
 slider_layout = Layout(width="60%")
-model = widgets.Select(options=modelnames,
-                       description="model",
-                       ensure_option=True,
-                       layout=slider_layout)
+model = widgets.Select(
+    options=modelnames, description="model", ensure_option=True, layout=slider_layout
+)
 prompt = widgets.Text(placeholder="positive prompt here", layout=text_layout)
-negative_prompt = widgets.Text(placeholder="negative prompt here",
-                               layout=text_layout)
-width = widgets.IntSlider(value=512,
-                          min=360,
-                          max=640,
-                          step=2,
-                          description="width",
-                          layout=slider_layout)
-height = widgets.IntSlider(value=512,
-                           min=360,
-                           max=640,
-                           step=2,
-                           description="height",
-                           layout=slider_layout)
+negative_prompt = widgets.Text(placeholder="negative prompt here", layout=text_layout)
+width = widgets.IntSlider(
+    value=512, min=360, max=640, step=2, description="width", layout=slider_layout
+)
+height = widgets.IntSlider(
+    value=512, min=360, max=640, step=2, description="height", layout=slider_layout
+)
 run = widgets.Button(description="run")
+
 
 def display_widgets():
     global prompt, negative_prompt, width, height, run
@@ -107,8 +100,10 @@ def set_model(clicked):
         pipe = diffusers.StableDiffusionPipeline.from_pretrained(
             str(model.value),
             # torch_dtype=torch.float16,
-            cache_dir=os.getenv("HF_DATASETS_CACHE")).to("cuda")
+            cache_dir=os.getenv("HF_DATASETS_CACHE"),
+        ).to("cuda")
         pipe.safety_checker = None
+
 
 def generate(clicked):
     global prompt, negative_prompt, width, height, finished, pipe, pipemodel
@@ -117,28 +112,45 @@ def generate(clicked):
         pipemodel = str(model.value)
     clear_output()
     display_widgets()
-    print("\n".join([
-        "```md",
-        "# prompt",
-        f"{str(prompt.value)}",
-        "",
-        "# negative prompt",
-        f"{str(negative_prompt.value)}",
-        "```",
-    ]))
 
     imgs = []
     for i in range(4):
         torch.cuda.empty_cache()
-        imgs.append(gen_txt2img(pipe,
-                    str(prompt.value),
-                    negative_prompt=str(negative_prompt.value),
-                    width=width.value,
-                    height=height.value))
+        generator = torch.Generator(device=pipe.device).manual_seed(
+            numpy.random.randint(2**63)
+        )
+        imgs.append(
+            gen_txt2img(
+                pipe,
+                str(prompt.value),
+                negative_prompt=str(negative_prompt.value),
+                width=width.value,
+                height=height.value,
+                generator=generator,
+            )
+        )
+        print(
+            "\n".join(
+                [
+                    "```md",
+                    "# prompt",
+                    f"{str(prompt.value)}",
+                    "",
+                    "# negative prompt",
+                    f"{str(negative_prompt.value)}",
+                    "",
+                    "# seed",
+                    f"{str(generator.initial_seed())}",
+                    "```",
+                ]
+            )
+        )
+
         display(imgs[i])
     torch.cuda.empty_cache()
 
     display(grid_img(imgs, 2, 2))
+
 
 run.on_click(generate)
 display_widgets()

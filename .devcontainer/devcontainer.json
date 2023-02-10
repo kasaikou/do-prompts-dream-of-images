@@ -17,14 +17,15 @@
 		"env": "touch ./.devcontainer/.env",
 		"huggingface_cache": "mkdir -p /workspace/.cache/huggingface"
 	},
-	"postCreateCommand": "/workspace/.devcontainer/post_create.sh",
-	"postAttachCommand": "/workspace/.devcontainer/post_attach.sh",
+	"postStartCommand": {
+		"poetry": "poetry install"
+	},
+	"postAttachCommand": "sh /workspace/.devcontainer/post_attach.sh",
 	"extensions": [
 		"emeraldwalk.RunOnSave",
 		"ms-toolsai.jupyter",
 		"ms-python.python",
 		"ms-python.gather",
-		"ms-python.isort",
 		"golang.go",
 		"eamodio.gitlens",
 		"mhutchie.git-graph"
@@ -33,7 +34,7 @@
 		"vscode": {
 			"settings": {
 				"python.venvFolders": [
-					".container-venv"
+					".venv"
 				],
 				"jupyter.widgetScriptSources": [
 					"jsdelivr.com",

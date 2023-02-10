@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "do-prompts-dream-of-images"
+version = "0.1.0"
+description = ""
+authors = ["Kasai Kou <streamwest1629@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^1.5.3"
+jupytext = "1.14.4"
+jupyter = "^1.0.0"
+pyqt5 = "^5.15.8"
+ipykernel = "^6.20.2"
+ipython = "^8.9.0"
+isort = "^5.12.0"
+black = "^23.1.0"
+jupyterlab = "^3.5.3"
+ipywidgets = "<8"
+nbconvert = "^7.2.9"
+nbformat = "^5.7.3"
+numpy = "^1.24.1"
+matplotlib = "^3.6.3"
+pillow = "^9.4.0"
+torch = "^1.13.1"
+torchvision = "^0.14.1"
+diffusers = {git = "https://github.com/huggingface/diffusers.git"}
+accelerate = "^0.16.0"
+transformers = "^4.26.0"
+omegaconf = "^2.3.0"
+pytorch-lightning = "^1.9.0"
+tensorboard = "^2.11.2"
+safetensors = "^0.2.8"
+bitsandbytes = "^0.36.0.post2"
+scikit-learn = "^1.2.1"
+ftfy = "^6.1.1"
+gradio = "^3.17.0"
+opencv-python = "^4.7.0.68"
+gitpython = "^3.1.30"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
