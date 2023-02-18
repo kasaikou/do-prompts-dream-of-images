@@ -28,7 +28,8 @@
 		"ms-python.gather",
 		"golang.go",
 		"eamodio.gitlens",
-		"mhutchie.git-graph"
+		"mhutchie.git-graph",
+		"chrisdias.vscode-opennewinstance"
 	],
 	"customizations": {
 		"vscode": {
