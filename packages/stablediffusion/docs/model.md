@@ -23,6 +23,7 @@ class HuggingFaceDiffusionRepo:
         revision: Optional[str] = None,
         torch_dtype=torch.float16,
         device: torch.device | str = "cuda",
+        use_auth_token: Optional[str] = None,
     ):
         if revision is None:
             revision = self._get_latest_revision(reponame)
@@ -30,6 +31,7 @@ class HuggingFaceDiffusionRepo:
         self.revision: str = revision
         self.torch_dtype = torch_dtype
         self.device = device
+        self.use_auth_token = use_auth_token
 
     @staticmethod
     def _get_latest_revision(reponame: str, host="https://huggingface.co") -> str:
@@ -62,6 +64,7 @@ class HuggingFaceDiffusionRepo:
             revision=self.revision,
             torch_dtype=self.torch_dtype,
             cache_dir=os.getenv("HF_DATASETS_CACHE"),
+            use_auth_token=self.use_auth_token,
         ).to(self.device)
 ```
 

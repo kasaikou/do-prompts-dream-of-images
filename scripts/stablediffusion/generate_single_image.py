@@ -3,6 +3,7 @@
 
 # %%
 import json
+import os
 from typing import Optional
 
 import IPython.display
@@ -83,6 +84,7 @@ class Application:
             reponame=str(self.reponame.value),
             revision=str(self.revision.value) if self.revision.value != "" else None,
             torch_dtype=torch.float32,
+            use_auth_token=os.getenv("HUGGINGFACE_TOKEN"),
         )
 
         if self.modelInfo:
