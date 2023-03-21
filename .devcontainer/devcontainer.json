@@ -21,21 +21,30 @@
 		"poetry": "poetry install"
 	},
 	"postAttachCommand": "sh /workspace/.devcontainer/post_attach.sh",
-	"extensions": [
-		"emeraldwalk.RunOnSave",
-		"ms-toolsai.jupyter",
-		"ms-python.python",
-		"ms-python.gather",
-		"golang.go",
-		"eamodio.gitlens",
-		"mhutchie.git-graph",
-		"chrisdias.vscode-opennewinstance"
-	],
 	"customizations": {
 		"vscode": {
+			"extensions": [
+				"emeraldwalk.RunOnSave",
+				"ms-toolsai.jupyter",
+				"ms-python.python",
+				"ms-python.gather",
+				"ms-python.flake8",
+				"njpwerner.autodocstring",
+				"bungcip.better-toml",
+				"golang.go",
+				"eamodio.gitlens",
+				"mhutchie.git-graph",
+				"chrisdias.vscode-opennewinstance"
+			],
 			"settings": {
 				"python.venvFolders": [
 					".venv"
+				],
+				"python.formatting.blackPath": "${workspaceFolder}/.venv/bin/black",
+				"python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
+				"python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
+				"isort.path": [
+					"${workspaceFolder}/.venv/bin/isort"
 				],
 				"jupyter.widgetScriptSources": [
 					"jsdelivr.com",
