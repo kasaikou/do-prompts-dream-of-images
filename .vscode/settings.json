@@ -1,16 +1,37 @@
 {
+    "editor.formatOnSave": true,
     "python.analysis.typeCheckingMode": "basic",
-    "python.formatting.provider": "yapf",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoSearchPaths": true,
+    "python.formatting.provider": "black",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "flake8.args": [
+        "--config-file=pyproject.toml",
+    ],
+    "python.linting.mypyEnabled": true,
     "jupyter.widgetScriptSources": [
         "jsdelivr.com",
         "unpkg.com"
     ],
-    "emeraldwalk.runonsave": {
-        "commands": [
-            {
-                "match": ".ipynb$",
-                "cmd": "jupytext --set-formats '@/ipynb,ipymd//md:markdown,py:percent' ${file}"
-            }
-        ]
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/packages"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/packages"
+    ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none",
     },
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "gitlens.codeLens.symbolScopes": [
+            "!Module"
+        ],
+        "editor.wordBasedSuggestions": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "autoDocstring.docstringFormat": "google"
 }
